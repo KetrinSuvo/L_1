@@ -1,0 +1,24 @@
+Description: Fix user_busy to not leave subuid open in case of error.
+Author: William Grant <wgrant@ubuntu.com>
+Bug: https://bugs.launchpad.net/ubuntu/vivid/+source/shadow/+bug/1436937
+
+Index: shadow-4.1.5.1/libmisc/user_busy.c
+===================================================================
+--- shadow-4.1.5.1.orig/libmisc/user_busy.c
++++ shadow-4.1.5.1/libmisc/user_busy.c
+@@ -168,6 +168,7 @@ static int user_busy_processes (const ch
+ 	if (stat ("/", &sbroot) != 0) {
+ 		perror ("stat (\"/\")");
+ 		(void) closedir (proc);
++	        sub_uid_close();
+ 		return 0;
+ 	}
+ 
+@@ -205,6 +206,7 @@ static int user_busy_processes (const ch
+ 
+ 		if (check_status (name, tmp_d_name, uid) != 0) {
+ 			(void) closedir (proc);
++	                sub_uid_close();
+ 			fprintf (stderr,
+ 			         _("%s: user %s is currently used by process %d\n"),
+ 			         Prog, name, pid);
