@@ -11,7 +11,9 @@
 
 # 1 
 which passwd
+
 dpkg -S /usr/bin/passwd
+
 apt-get source passwd
 
 # 2
