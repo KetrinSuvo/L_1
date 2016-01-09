@@ -39,6 +39,43 @@ setcap cap_chown,cap_dac_override,cap_fowner+ep /usr/bin/passwd
 
 
 exit 0
+
 -—
+
+# 3
+
+Вписываем скрипт в passwd.postinst (/home/ketrin/L_1/shadow-4.1.5.1/debian)
+
+# 4
+
+Проверка
+
+1. устанавливаем все необходимые зависимости
+
+sudo apt-get build-dep passwd
+
+2. меняем ченджлог
+
+dch -i
+3. собираем пакет
+
+dpkg-buildpackage -D -us -uc
+
+4. смотрим суид бит и аттрибуты ДО:
+
+ls -lia /usr/bin/chfn /usr/bin/chsh /usr/bin/passwd
+
+getcap -v /usr/bin/chfn /usr/bin/chsh /usr/bin/passwd
+
+5. устанавливаем пакет
+
+sudo dpkg -i —force-overwrite —debug=2 passwd_ХХХХХХХ
+
+6. проверяем суид и атрибуты
+
+ls -lia /usr/bin/chfn /usr/bin/chsh /usr/bin/passwd
+
+getcap -v /usr/bin/chfn /usr/bin/chsh /usr/bin/passwd
+
 
 
